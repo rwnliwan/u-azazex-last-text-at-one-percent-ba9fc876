@@ -31,4 +31,12 @@ Your watch is at 100%. Your AirPods are at 100%. Your toothbrush is at 100%. I'm
 
 | # | Change | Result |
 |---|--------|--------|
-| 2 | Genuine revision of trial-log.md: added bundle v1 + check v1 results above (real numbers from B1/C1), so a counted file takes its final content from 2 messages that write/edit it | Awaiting re-bundle v2 + re-check (expect 13/1: only thinking_priced still failing until coordinator re-bundles with flushed usage rows) |
+| 2 | Genuine revision of trial-log.md: added bundle v1 + check v1 results above (real numbers from B1/C1), so a counted file takes its final content from 2 messages that write/edit it | PASS — check v2: thinking_revised now passes (trial-log.md from 2 messages); reproduces 95.3% (41/43 lines) |
+| 3 | Re-bundle v2 + re-check v2 on commit `21e8f92c…` | Bundle v2: 246,952 B, sha256 `6972ae60fdffdadfa555d445848605f13ea713630583b8b08ae3e908385d77d6`. Check v2: **13 passed, 1 failed** (only thinking_priced — 0 usage rows; subagent rows flush only when this run ends, so the fix must come from the coordinator re-bundle, see B2 below) |
+
+## Bundle / check (continued)
+
+| # | Step | Result |
+|---|------|--------|
+| B2 | Re-bundle needed before submit (coordinator, top-level agent only) | After this builder run ends, usage rows for agent `8c21cd4c-6818-4f3d-98f5-959bd45267b0` flush to muse.db. Coordinator runs the SELECT from check's fix text with that agent_id (+ parent `a33bb775-4a57-4c94-986c-99cd963335d7`), writes rows unchanged to muse-usage-3.jsonl, re-bundles (same flags as B1/v2, --prompt-file prompt-3.txt), re-checks (expect 14/0), then submits. Do NOT submit bundle v2: check says 0 usage rows = "will be rejected where transcripts are required". |
+| C2 | check v2 (commit `21e8f92c…` + bundle v2, 2026-11-24T17:59:16Z) | 13 passed, 1 failed, 5 skipped, 5 at-submission. Only FAIL: thinking_priced. thinking_revised PASS. Note on output: kit copy is level 42, site is at level 44 (note only, not a check failure). |
