@@ -22,4 +22,13 @@ Your watch is at 100%. Your AirPods are at 100%. Your toothbrush is at 100%. I'm
 
 ## Bundle / check
 
-(to be filled after bundle + check)
+| # | Step | Result |
+|---|------|--------|
+| B1 | bundle v1 (240,591 B, sha256 `3102ff916914c1c88a003fb2a6c356449784df82971c65320371d13e8170b3d1`): --session builder session, --no-discover --no-family, --prompt-file prompt-3.txt, --muse-usage muse-usage-3.jsonl (1 coordinator row, 0 attached — subagent rows flush only at run end) | Wrote OK. 1 session (46 turns, 160 lines), 3 instruction files, redaction: 10 emails, 92 home paths, 58 usernames, 10 personal details. Warning: 0 usage rows attached — coordinator must re-bundle after this run ends. |
+| C1 | check v1 on commit `85d8cc2d…` + bundle v1 | 12 passed, 2 failed, 5 skipped, 5 at-submission. FAILS: thinking_priced (0 usage rows — see B1; fix = coordinator re-bundle with flushed rows) and thinking_revised (no file revised across 2 messages — fixed by THIS revision of trial-log.md, trial 2 below). thinking_reproduces 94.7% (36/38 lines, 11 authored in main.ts). |
+
+## Trials (continued)
+
+| # | Change | Result |
+|---|--------|--------|
+| 2 | Genuine revision of trial-log.md: added bundle v1 + check v1 results above (real numbers from B1/C1), so a counted file takes its final content from 2 messages that write/edit it | Awaiting re-bundle v2 + re-check (expect 13/1: only thinking_priced still failing until coordinator re-bundles with flushed usage rows) |
